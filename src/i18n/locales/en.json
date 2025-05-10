@@ -1,0 +1,181 @@
+{
+  "common": {
+    "menu": "Menu",
+    "scannedMenus": "My Places",
+    "orders": "My Orders",
+    "account": "Account",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "register": "Register",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "remove": "Remove",
+    "search": "Search",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "settings": "Settings",
+    "dashboard": "Dashboard",
+    "places": "Discover Places",
+    "home": "Home",
+    "viewMore": "Details",
+    "call":"Call",
+    "location":"Location",
+    "saveMenu":"Save Menu"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "phone": "Phone",
+    "address": "Address",
+    "role": {
+      "restaurant": "Restaurant Owner",
+      "customer": "Customer"
+    }
+  },
+  "restaurant": {
+    "dashboard": "Dashboard",
+    "menuManagement": "Menu Management",
+    "qrCode": "QR Code",
+    "ordersManagement": "Orders Management",
+    "categories": "Categories",
+    "menuItems": "Menu Items",
+    "addCategory": "Add Category",
+    "editCategory": "Edit Category",
+    "addMenuItem": "Add Menu Item",
+    "editMenuItem": "Edit Menu Item"
+  },
+  "customer": {
+    "dashboard": "Dashboard",
+    "viewMenu": "View Menu",
+    "myOrders": "My Orders",
+    "myAccount": "My Account",
+    "cart": "Cart",
+    "checkout": "Checkout",
+    "orderHistory": "Order History",
+    "myMenus": {
+      "title": "My Places",
+      "discoverMore": "Discover More Places",
+      "noMenus": {
+        "title": "No Saved Places Yet",
+        "subtitle": "You haven't saved any places yet.!",
+        "link": "Save your first place"
+      }
+    },
+    "myOrders": {
+      "title": "My Orders",
+      "discoverMore": "Place a New Order",
+      "noOrders":{
+        "title":"No Orders Yet",
+        "subtitle":"You haven't placed any orders yet. Browse menus and place your first order!",
+        "link":"Place your first order"
+      }
+    }
+  },
+  "landing": {
+    "hero": {
+      "title": "Digital Menus & Ordering Made Simple",
+      "subtitle": "Create beautiful digital menus, generate QR codes, and let customers order directly from their phones.",
+      "registerButton": "Register Now",
+      "learnMore": "Learn More",
+      "imageAlt": "Restaurant table with menu",
+      "goToDashboard": "Go To Dashboard"
+    },
+    "features": {
+      "title": "Features & Benefits",
+      "subtitle": "Everything you need to digitize your restaurant menu and enhance the customer experience.",
+      "digital": {
+        "title": "Digital Menu Management",
+        "description": "Create and manage your menu with categories, descriptions, and prices in an intuitive dashboard."
+      },
+      "qr": {
+        "title": "QR Code Generation",
+        "description": "Generate custom QR codes that customers can scan to view your menu on their devices."
+      },
+      "ordering": {
+        "title": "Online Ordering",
+        "description": "Accept orders directly through the digital menu, reducing wait times and order errors."
+      },
+      "accounts": {
+        "title": "Customer Accounts",
+        "description": "Customers can create accounts to track their orders and reorder their favorite items."
+      }
+    },
+    "testimonials": {
+      "title": "What Our Customers Say",
+      "1": {
+        "quote": "Since implementing 2akel, we've seen a 30% increase in order efficiency and our customers love the ability to browse the menu at their own pace.",
+        "author": "Sarah Johnson",
+        "role": "Restaurant Owner, The Olive Branch"
+      },
+      "2": {
+        "quote": "The QR code feature has been a game-changer for us. It's reduced our printing costs and allowed us to update our seasonal menu items instantly.",
+        "author": "Michael Chen",
+        "role": "Manager, Urban Plate"
+      },
+      "3": {
+        "quote": "Our customers appreciate the convenience of ordering from their phones, and it's made our service more efficient during rush hours.",
+        "author": "Lisa Rodriguez",
+        "role": "Owner, Seaside Café"
+      }
+    },
+    "pricing": {
+      "choosePlan": "Choose Plan",
+      "customers": "Customers",
+      "restaurants": "Restaurants"
+    },
+    "cta": {
+      "title": "Ready to Modernize Your Restaurant?",
+      "subtitle": "Join hundreds of restaurants that are enhancing their customer experience with digital menus and ordering.",
+      "button": "Get Started Now"
+    },
+    "footer": {
+      "description": "Empowering restaurants with digital menu solutions since 2023.",
+      "product": {
+        "title": "Product",
+        "features": "Features",
+        "pricing": "Pricing",
+        "testimonials": "Testimonials",
+        "faq": "FAQ"
+      },
+      "company": {
+        "title": "Company",
+        "about": "About Us",
+        "blog": "Blog",
+        "careers": "Careers",
+        "contact": "Contact"
+      },
+      "legal": {
+        "title": "Legal",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Service",
+        "cookies": "Cookie Policy"
+      },
+      "copyright": "© {{year}} 2akel. All rights reserved."
+    }
+  },
+  "places": {
+    "hero": {
+      "title": "Places",
+      "subtitle": "Discover more than 250K restaurants, cafes, bars"
+    },
+    "featuredPlaces": {
+      "title": "Featured Places",
+      "subtitle": "Find quality and taste near you"
+    },
+    "cuisines": {
+      "title": "Places by Cuisines",
+      "subtitle": "Narrow down your choices by selecting from a variety of cuisines"
+    }
+  },
+  "place":{
+    "categories":{
+      "all":"All",
+      "featured":"Featured"
+    }
+  }
+}
