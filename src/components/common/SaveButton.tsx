@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BookmarkPlus } from 'lucide-react';
+import { BookmarkPlus, BookmarkCheck } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { useAuthStore } from '../../stores/authStore';
 import { saveRestaurant, unsaveRestaurant, isRestaurantSaved } from '../../lib/api';
@@ -46,10 +46,10 @@ const SaveButton: React.FC<SaveButtonProps> = ({ restaurantId, onSaveChange }) =
 
     try {
       if (isSaved) {
-        await unsaveRestaurant(restaurantId,user.id);
+        await unsaveRestaurant(restaurantId, user.id);
         toast.success('Unsaved');
       } else {
-        await saveRestaurant(restaurantId,user.id);
+        await saveRestaurant(restaurantId, user.id);
         toast.success('Saved!');
       }
 
@@ -65,14 +65,14 @@ const SaveButton: React.FC<SaveButtonProps> = ({ restaurantId, onSaveChange }) =
 
   return (
     <Button
-    variant='outline'
-    icon={BookmarkPlus}
-    onClick={handleToggleSave}
-    isLoading={isLoading}
-    className={`text-white !p-0 !border-0 !focus:ring-0 ${isSaved ? '' : ''}`}
-  >
-    {isSaved ? 'Saved' : 'Save'}
-  </Button>
+      variant='outline'
+      icon={isSaved ? BookmarkCheck : BookmarkPlus}
+      onClick={handleToggleSave}
+      isLoading={isLoading}
+      className={`text-white !p-0 !border-0 !focus:ring-0 ${isSaved ? '' : ''}`}
+    >
+      {isSaved ? 'Saved' : 'Save'}
+    </Button>
   );
 };
 

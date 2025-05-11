@@ -4,7 +4,8 @@ import { useAuthStore } from '../stores/authStore';
 import { ArrowRight, Utensils, QrCode, ShoppingBag, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Button from '../components/common/Button';
-import LanguageSelector from '../components/common/LanguageSelector';
+import Header from '../components/common/Header';
+import Footer from '../components/common/Footer';
 import PricingSection from '../components/common/Pricing';
 
 const Landing = () => {
@@ -13,49 +14,7 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16 items-center">
-            <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-primary">2akel</h1>
-            </div>
-
-            <div className="flex items-center space-x-4">
-              <Link to="/" className="text-sm font-medium text-gray-700 hover:text-primary">
-                {t('common.home')}
-              </Link>
-              <Link to="/places" className="text-sm font-medium text-gray-700 hover:text-primary">
-                {t('common.places')}
-              </Link>
-
-              <LanguageSelector />
-
-              {user == null ? (
-                <div className="flex items-center space-x-4">
-                  <Link
-                    to="/login"
-                    className="text-sm font-medium text-gray-700 hover:text-primary"
-                  >
-                    {t('common.signIn')}
-                  </Link>
-                  <Link to="/register">
-                    <Button variant="primary" size="sm">
-                      {t('common.register')}
-                    </Button>
-                  </Link>
-                </div>
-              ) : (
-                <Link to={user.role == "restaurant" ? "/restaurant" : "/user"}>
-                  <Button variant="primary" size="sm">
-                    {t('common.dashboard')}
-                  </Button>
-                </Link>
-              )}
-            </div>
-          </div>
-        </div>
-      </header >
+      <Header />
 
       {/* Hero section */}
       <section className="bg-gradient-to-br from-primary-light via-primary to-primary-dark text-white py-16 md:py-24" >
@@ -191,69 +150,9 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-lg font-bold mb-4 ">2akel</h3>
-              <p className="text-gray-400">
-                {t('landing.footer.description')}
-              </p>
-            </div>
-
-            <div>
-              <h4 className="text-md font-bold mb-4">{t('landing.footer.product.title')}</h4>
-              <ul className="space-y-2">
-                {['features', 'pricing', 'testimonials', 'faq'].map((item) => (
-                  <li key={item}>
-                    <a href="#" className="text-gray-400 hover:text-white">
-                      {t(`landing.footer.product.${item}`)}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-md font-bold mb-4">{t('landing.footer.company.title')}</h4>
-              <ul className="space-y-2">
-                {['about', 'blog', 'careers', 'contact'].map((item) => (
-                  <li key={item}>
-                    <a href="#" className="text-gray-400 hover:text-white">
-                      {t(`landing.footer.company.${item}`)}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-md font-bold mb-4">{t('landing.footer.legal.title')}</h4>
-              <ul className="space-y-2">
-                {['privacy', 'terms', 'cookies'].map((item) => (
-                  <li key={item}>
-                    <a href="#" className="text-gray-400 hover:text-white">
-                      {t(`landing.footer.legal.${item}`)}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          <div className="mt-12 pt-8 border-t border-gray-700 text-center text-gray-400 text-sm">
-            <p>{t('landing.footer.copyright', { year: new Date().getFullYear() })}</p>
-          </div>
-        </div>
-      </footer>
+      <Footer isHome={true}/>
     </div >
   );
 };
 
 export default Landing;
-
-
-
-// create restaurant details page, which is the same page to visit when  qr code is scanned and the user can order food
-// create 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuthStore } from '../../stores/authStore';
 import { useOrderStore } from '../../stores/orderStore';
 import { Order } from '../../types';
-import { ChevronDown, ChevronUp, Clock, CheckCircle, XCircle, PackageCheck,Eye, ChefHat } from 'lucide-react';
+import { ChevronDown, ChevronUp, Clock, CheckCircle, XCircle, PackageCheck, Eye, ChefHat } from 'lucide-react';
 import Card from '../../components/common/Card';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -13,27 +13,23 @@ import { Link } from 'react-router-dom';
 const Orders = () => {
   const { t } = useTranslation();
   const { user } = useAuthStore();
-  
+
   // Get orders directly from Zustand store
-  const customerOrders = useOrderStore((s) => 
+  const customerOrders = useOrderStore((s) =>
     user ? s.getOrdersByCustomer(user.id) : []
   );
-  
-  const isLoading = useOrderStore((s) => s.isLoading);
+
+  const [isLoading, setIsLoading] = useState(true);
   const hydrateFromDB = useOrderStore((s) => s.hydrateFromDB);
   const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
   const [isHydrating, setIsHydrating] = useState(true);
 
   useEffect(() => {
-    const loadData = async () => {
-      const local = localStorage.getItem("order-storage");
-      if (!local) {
-        await hydrateFromDB();
-      }
-      setIsHydrating(false);
-    };
-    
-    loadData();
+    hydrateFromDB()
+  }, []);
+
+  useEffect(() => {
+    setIsLoading(false)
   }, [hydrateFromDB]);
 
   const getStatusIcon = (status: string) => {
@@ -101,13 +97,6 @@ const Orders = () => {
     setExpandedOrder(expandedOrder === orderId ? null : orderId);
   };
 
-  if (isHydrating || isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  console.log('Current customer orders:', customerOrders);
-console.log('User ID:', user?.id);
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-6">
@@ -122,108 +111,130 @@ console.log('User ID:', user?.id);
           </Button>
         </Link>
       </div>
-      {customerOrders.length === 0 ? (
-        <Card>
-          <div className="text-center py-8">
-            <h3 className="text-lg font-medium text-gray-700 mb-2">{t('customer.myOrders.noOrders.title')}</h3>
-            <p className="text-gray-500 mb-3">{t('customer.myOrders.noOrders.subtitle')}</p>
 
-            <Link to='/places'>
-              <Button variant="ghost" size="sm">
-                {t('customer.myOrders.noOrders.link')}
-              </Button>
-            </Link>
+      {isLoading ? (
+        <div className="animate-pulse space-y-4">
+          <div className="h-[40px] bg-gray-400 rounded w-full mb-5"></div>
+          <div className="flex flex-col gap-4">
+            <div className="h-[90px] bg-gray-400 rounded w-full"></div>
+            <div className="h-[90px] bg-gray-300 rounded w-full"></div>
+            <div className="h-[90px] bg-gray-200 rounded w-full"></div>
           </div>
-        </Card>
+        </div>
       ) : (
-        <div className="space-y-4">
-          {customerOrders.map((order) => (
-            <Card key={order.id}>
-              <div
-                className="flex justify-between items-center cursor-pointer"
-                onClick={() => toggleOrderExpand(order.id)}
-              >
-                <div className="flex items-center space-x-4">
-                  {getStatusIcon(order.status)}
-                  <div>
-                    <h3 className="text-lg font-medium">
-                      Order #{order.id.substring(0, 8)}
-                    </h3>
-                    <p className="text-sm text-gray-500">
-                      {new Date(order.createdAt).toLocaleString()}
-                      {' • '}{order.items.length} items
-                    </p>
-                  </div>
-                </div>
+        <>
+          {customerOrders.length === 0 ? (
+            <Card>
+              <div className="text-center py-8">
+                <h3 className="text-lg font-medium text-gray-700 mb-2">{t('customer.myOrders.noOrders.title')}</h3>
+                <p className="text-gray-500 mb-3">{t('customer.myOrders.noOrders.subtitle')}</p>
 
-                <div className="flex items-center space-x-4">
-                  <span className={`px-3 py-1 text-xs font-medium rounded-full ${getStatusBadgeColor(order.status)}`}>
-                    {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                  </span>
-                  {expandedOrder === order.id ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-                </div>
+                <Link to='/places'>
+                  <Button variant="ghost" size="sm">
+                    {t('customer.myOrders.noOrders.link')}
+                  </Button>
+                </Link>
               </div>
-
-              <AnimatePresence>
-                {expandedOrder === order.id && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
+            </Card>
+          ) : (
+            <div className="space-y-4">
+              {customerOrders.map((order) => (
+                <Card key={order.id}>
+                  <div
+                    className="flex justify-between items-center cursor-pointer"
+                    onClick={() => toggleOrderExpand(order.id)}
                   >
-                    <div className="border-t mt-4 pt-4">
-                      <div className={`p-3 rounded-md mb-4 ${getStatusBadgeColor(order.status)}`}>
-                        <p>{getStatusText(order.status)}</p>
-                      </div>
-
-                      <div className="mb-4">
-                        <h4 className="font-medium mb-2">Order Items</h4>
-                        <div className="space-y-2">
-                          {order.items.map((item) => (
-                            <div key={item.id} className="flex justify-between bg-gray-50 p-3 rounded-md">
-                              <div>
-                                <div className="font-medium">
-                                  {item.quantity}x {item.name}
-                                </div>
-                                {item.specialInstructions && (
-                                  <p className="text-sm text-gray-600 italic mt-1">
-                                    "{item.specialInstructions}"
-                                  </p>
-                                )}
-                              </div>
-                              <div className="font-medium">
-                                {formatCurrency(item.subtotal)}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {order.specialInstructions && (
-                        <div className="mb-4">
-                          <h4 className="font-medium mb-1">Special Instructions</h4>
-                          <p className="text-gray-700 bg-gray-50 p-3 rounded-md">
-                            {order.specialInstructions}
-                          </p>
-                        </div>
-                      )}
-
-                      <div className="border-t pt-4 mt-4">
-                        <div className="flex justify-between font-medium">
-                          <span>Total</span>
-                          <span>{formatCurrency(order.totalAmount)}</span>
-                        </div>
+                    <div className="flex items-center space-x-4">
+                      {getStatusIcon(order.status)}
+                      <div>
+                        <h3 className="text-lg font-medium">
+                          Order #{order.created_at.split("T")[0].replaceAll("-","")}{order.id.substring(0, 8)}
+                        </h3>
+                        <p className="text-sm text-gray-500">
+                          {new Date(order.createdAt).toLocaleDateString('en-UK', {
+                              month: 'numeric',
+                              day: 'numeric',
+                              year: 'numeric',
+                              hour: 'numeric',
+                              minute: '2-digit',
+                              second: '2-digit',
+                              hour12: true
+                            }).replace(",","")} • {order.items.length} items
+                        </p>
                       </div>
                     </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </Card>
-          ))}
-        </div>
+
+                    <div className="flex items-center space-x-4">
+                      <span className={`px-3 py-1 text-xs font-medium rounded-full ${getStatusBadgeColor(order.status)}`}>
+                        {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                      </span>
+                      {expandedOrder === order.id ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                    </div>
+                  </div>
+
+                  <AnimatePresence>
+                    {expandedOrder === order.id && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="border-t mt-4 pt-4">
+                          <div className={`p-3 rounded-md mb-4 ${getStatusBadgeColor(order.status)}`}>
+                            <p>{getStatusText(order.status)}</p>
+                          </div>
+
+                          <div className="mb-4">
+                            <h4 className="font-medium mb-2">Order Items</h4>
+                            <div className="space-y-2">
+                              {order.items.map((item) => (
+                                <div key={item.id} className="flex justify-between bg-gray-50 p-3 rounded-md">
+                                  <div>
+                                    <div className="font-medium">
+                                      {item.quantity}x {item.name}
+                                    </div>
+                                    {item.specialInstructions && (
+                                      <p className="text-sm text-gray-600 italic mt-1">
+                                        "{item.specialInstructions}"
+                                      </p>
+                                    )}
+                                  </div>
+                                  <div className="font-medium">
+                                    {formatCurrency(item.subtotal)}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {order.specialInstructions && (
+                            <div className="mb-4">
+                              <h4 className="font-medium mb-1">Special Instructions</h4>
+                              <p className="text-gray-700 bg-gray-50 p-3 rounded-md">
+                                {order.specialInstructions}
+                              </p>
+                            </div>
+                          )}
+
+                          <div className="border-t pt-4 mt-4">
+                            <div className="flex justify-between font-medium">
+                              <span>Total</span>
+                              <span>{formatCurrency(order.totalAmount)}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </Card>
+              ))}
+            </div>
+          )}
+        </>
       )}
+
     </div>
   );
 };

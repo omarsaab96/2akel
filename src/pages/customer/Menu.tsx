@@ -82,6 +82,17 @@ const Menu = () => {
         </Link>
       </div>
 
+      {loading && (
+        <div className="animate-pulse space-y-4">
+          <div className="h-10 bg-gray-400 rounded w-full"></div>
+          <div className="flex gap-4">
+            <div className="h-[200px] bg-gray-400 rounded w-1/3"></div>
+            <div className="h-[200px] bg-gray-300 rounded w-1/3"></div>
+            <div className="h-[200px] bg-gray-200 rounded w-1/3"></div>
+          </div>
+        </div>
+      )}
+
       {/* No places */}
       {myPlaces.length == 0 && !loading && (
         <Card>
@@ -201,7 +212,7 @@ const Menu = () => {
       )}
 
       {/* search results empty */}
-      {searchQuery.length != 0 && searchResults.length == 0 && (
+      {searchQuery.length != 0 && searchResults.length == 0 && !loading && (
         <Card>
           <div className="text-center py-8">
             <h3 className="text-lg font-medium text-gray-700 mb-2">No Results</h3>

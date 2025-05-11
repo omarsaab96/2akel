@@ -15,9 +15,9 @@ const PricingSection = () => {
             { title: 'Annually', price: '$199.99', period: '/yr', features: ['Unlimited categories', 'Unlimited items', 'Free QR code'], flag:'Save 40$' },
         ],
         customers: [
-            { title: 'Basic', price: '$100', period: '/yr', features: ['1 Website', '10GB Storage', 'Email Support'] },
-            { title: 'Pro', price: '$300', period: '/yr', features: ['5 Websites', '50GB Storage', 'Priority Support'] },
-            { title: 'Enterprise', price: '$600', period: '/yr', features: ['Unlimited Websites', '200GB Storage', '24/7 Support'] },
+            { title: 'Free', price: '$0.00', period: '', features: ['Discover Places', 'Scan QR Menus', 'Save Places', 'Track Orders'] },
+            // { title: 'Monthly', price: '$2.99', period: '/mo', features: ['5 Websites', '50GB Storage', 'Priority Support'] },
+            // { title: 'Annually', price: '$29.99', period: '/yr', features: ['Unlimited Websites', '200GB Storage', '24/7 Support'] },
         ],
     };
 
@@ -41,11 +41,11 @@ const PricingSection = () => {
                     </button>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="flex justify-center gap-6">
                     {plans[activeTab].map((plan, index) => (
                         <div
                             key={index}
-                            className={`p-6 border rounded-lg text-center shadow hover:shadow-lg relative ${plan.flag && plan.flag === 'Most popular' ? 'border-primary' : ''}`}
+                            className={`w-1/3 p-6 border rounded-lg text-center shadow hover:shadow-lg relative ${plan.flag && plan.flag === 'Most popular' ? 'border-primary' : ''}`}
                             >
                             {plan.flag && (
                                 <div className={`absolute top-0 left-[50%]  text-xs px-2 py-1 rounded-full transform -translate-x-1/2 -translate-y-1/2 ${plan.flag && plan.flag === 'Most popular' ? 'bg-white border-2 border-primary text-primary' : 'text-primary bg-accent'}`}>

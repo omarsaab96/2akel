@@ -1,12 +1,14 @@
 import React from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  Menu, 
-  QrCode, 
-  ShoppingBag, 
-  User, 
-  LogOut, 
+import { Link } from 'react-router-dom';
+
+import {
+  LayoutDashboard,
+  Menu,
+  QrCode,
+  ShoppingBag,
+  User,
+  LogOut,
   ChevronDown,
   Settings
 } from 'lucide-react';
@@ -18,12 +20,12 @@ const RestaurantLayout = () => {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  
+
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
-  
+
   const navItems = [
     {
       path: '/restaurant',
@@ -47,16 +49,20 @@ const RestaurantLayout = () => {
       icon: ShoppingBag,
     },
   ];
-  
+
   return (
     <div className="h-screen bg-background flex">
       {/* Sidebar */}
       <div className="w-64 bg-white shadow-md">
         <div className="p-4 border-b border-gray-200">
-          <h1 className="text-xl font-semibold text-primary">2akel</h1>
+          <h1 className="text-xl font-semibold text-primary">
+            <Link to="/">
+              2akel
+            </Link>
+          </h1>
           <p className="text-sm text-gray-600">{t('restaurant.dashboard')}</p>
         </div>
-        
+
         <nav className="mt-6">
           <ul>
             {navItems.map((item) => (
@@ -66,8 +72,8 @@ const RestaurantLayout = () => {
                   end={item.exact}
                   className={({ isActive }) => `
                     flex items-center gap-3 px-4 py-3 text-sm font-medium
-                    ${isActive 
-                      ? 'text-primary bg-primary/10 border-r-4 border-primary' 
+                    ${isActive
+                      ? 'text-primary bg-primary/10 border-r-4 border-primary'
                       : 'text-gray-600 hover:bg-gray-100'
                     }
                   `}
@@ -79,7 +85,7 @@ const RestaurantLayout = () => {
             ))}
           </ul>
         </nav>
-        
+
         <div className="absolute bottom-0 left-0 w-64 border-t border-gray-200 p-4">
           <div className="flex flex-col">
             <div className="flex items-center mb-4">
@@ -95,17 +101,17 @@ const RestaurantLayout = () => {
                 </p>
               </div>
             </div>
-            
+
             <div className="relative group">
               {/* <button className="text-gray-500 hover:text-gray-700">
                 <ChevronDown className="h-5 w-5" />
               </button> */}
-              
+
               <div className="mb-1 bg-white rounded-md shadow-lg py-1 group-hover:block">
                 {/* <div className="px-4 py-2 text-xs text-gray-500 border-b border-gray-100">
                   {t('common.signIn')} {user?.email}
                 </div> */}
-                
+
                 <button
                   className="w-full text-left  py-2 text-sm text-gray-700 hover:bg-primary/10 flex items-center gap-2"
                   onClick={() => navigate('/restaurant/profile')}
@@ -113,7 +119,7 @@ const RestaurantLayout = () => {
                   <User className="h-4 w-4" />
                   {t('customer.myAccount')}
                 </button>
-                
+
                 <button
                   className="w-full text-left  py-2 text-sm text-gray-700 hover:bg-primary/10 flex items-center gap-2"
                   onClick={() => navigate('/restaurant/settings')}
@@ -121,7 +127,7 @@ const RestaurantLayout = () => {
                   <Settings className="h-4 w-4" />
                   {t('common.settings')}
                 </button>
-                
+
                 <button
                   className="w-full text-left  py-2 text-sm text-gray-700 hover:bg-primary/10 flex items-center gap-2"
                   onClick={handleLogout}
@@ -129,7 +135,7 @@ const RestaurantLayout = () => {
                   <LogOut className="h-4 w-4" />
                   {t('common.signOut')}
                 </button>
-                
+
                 <div className=" py-2 border-t border-gray-100">
                   <LanguageSelector />
                 </div>
@@ -138,7 +144,7 @@ const RestaurantLayout = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Main content */}
       <div className="flex-1 min-w-0 overflow-auto">
         <main className="p-6">

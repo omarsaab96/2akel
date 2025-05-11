@@ -7,7 +7,8 @@ import Card from '../components/common/Card';
 import Button from '../components/common/Button';
 import SaveButton from '../components/common/SaveButton';
 import { useTranslation } from 'react-i18next';
-import LanguageSelector from '../components/common/LanguageSelector';
+import Header from '../components/common/Header';
+import Footer from '../components/common/Footer';
 import { useAuthStore } from '../stores/authStore';
 import { useOrderStore } from '../stores/orderStore';
 import { toast } from 'react-hot-toast';
@@ -27,9 +28,28 @@ const Place = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('all');
-  
+
   const cartRef = useRef(null);
   const toggleRef = useRef(null);
+
+  const [isFooterVisible, setIsFooterVisible] = useState(false);
+
+  useEffect(() => {
+    const footer = document.getElementById('app-footer');
+
+    const handleScroll = () => {
+      if (!footer) return;
+      const rect = footer.getBoundingClientRect();
+      setIsFooterVisible(rect.top < window.innerHeight);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // initial check
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     fetchRestaurantDetails();
@@ -107,8 +127,8 @@ const Place = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading Place...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-[5px] border-transparent border-b-primary mx-auto"></div>
+          <p className="animate-pulse font-medium mt-4 text-gray-600">Loading Place...</p>
         </div>
       </div>
     );
@@ -167,7 +187,7 @@ const Place = () => {
     setCart(getCart)
   };
 
-  const handlePlaceOrder = (userID)=>{
+  const handlePlaceOrder = (userID) => {
     placeOrder(userID)
     setCart(getCart)
   }
@@ -175,49 +195,7 @@ const Place = () => {
   return (
     <div className="min-h-screen bg-background">
 
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16 items-center">
-            <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-primary">2akel</h1>
-            </div>
-
-            <div className="flex items-center space-x-4">
-              <Link to="/" className="text-sm font-medium text-gray-700 hover:text-primary">
-                {t('common.home')}
-              </Link>
-              <Link to="/places" className="text-sm font-medium text-gray-700 hover:text-primary">
-                {t('common.places')}
-              </Link>
-
-              <LanguageSelector />
-
-              {user == null ? (
-                <div className="flex items-center space-x-4">
-                  <Link
-                    to="/login"
-                    className="text-sm font-medium text-gray-700 hover:text-primary"
-                  >
-                    {t('common.signIn')}
-                  </Link>
-                  <Link to="/register">
-                    <Button variant="primary" size="sm">
-                      {t('common.register')}
-                    </Button>
-                  </Link>
-                </div>
-              ) : (
-                <Link to={user.role == "restaurant" ? "/restaurant" : "/user"}>
-                  <Button variant="primary" size="sm">
-                    {t('common.dashboard')}
-                  </Button>
-                </Link>
-              )}
-            </div>
-          </div>
-        </div>
-      </header >
+      <Header />
 
       {/* Hero section */}
       <div className="bg-primary text-white pt-6 mb-10">
@@ -428,7 +406,7 @@ const Place = () => {
       ))}
 
       {cart && (
-        <div className='w-[400px] fixed bottom-5 right-5 transition-all duration-300 z-2'>
+        <div className={`w-[400px] fixed right-5 transition-all duration-300 z-2 ${isFooterVisible ? 'bottom-16' : 'bottom-5'}`}>
           <div className='w-full text-right'>
             {cartIsOpen ? (
               <Button ref={toggleRef} variant="ghost" onClick={toggleCart} icon={X} className='bg-[rgb(248,229,231)] hover:bg-[rgb(248,229,231)]' />
@@ -536,6 +514,8 @@ const Place = () => {
           </div>
         </div>
       )}
+
+      <Footer minimal={true} />
 
     </div >
   );

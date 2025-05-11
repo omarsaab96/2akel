@@ -8,10 +8,10 @@ import { UserRole } from '../../types';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 import Select from '../../components/common/Select';
-import LanguageSelector from '../../components/common/LanguageSelector';
+import Header from '../../components/common/Header';
 
 const Register = () => {
-   const { t } = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { register, user } = useAuthStore();
 
@@ -64,48 +64,8 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16 items-center">
-            <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-primary">2akel</h1>
-            </div>
+      <Header noBG={true} />
 
-            <div className="flex items-center space-x-4">
-              <Link to="/" className="text-sm font-medium text-gray-700 hover:text-primary">
-                {t('common.home')}
-              </Link>
-              <Link to="/places" className="text-sm font-medium text-gray-700 hover:text-primary">
-                {t('common.places')}
-              </Link>
-
-              <LanguageSelector />
-
-              {user == null ? (
-                <div className="flex items-center space-x-4">
-                  <Link
-                    to="/login"
-                    className="text-sm font-medium text-gray-700 hover:text-primary"
-                  >
-                    {t('common.signIn')}
-                  </Link>
-                  <Link to="/register">
-                    <Button variant="primary" size="sm">
-                      {t('common.register')}
-                    </Button>
-                  </Link>
-                </div>
-              ) : (
-                <Link to={user.role == "restaurant" ? "/restaurant" : "/user"}>
-                  <Button variant="primary" size="sm">
-                    {t('common.dashboard')}
-                  </Button>
-                </Link>
-              )}
-            </div>
-          </div>
-        </div>
-      </header >
       <div className="bg-background flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
           <div>

@@ -18,7 +18,7 @@ interface OrderState {
     restaurantId: string;
     items: CartItem[];
   };
-  isLoading: boolean;
+  isLoadingStore: boolean;
 
   getCart: () => {
     restaurantId: string;
@@ -53,7 +53,7 @@ export const useOrderStore = create<OrderState>()(
         restaurantId: '',
         items: [],
       },
-      isLoading: false,
+      isLoadingStore: false,
 
       // Cart actions
       addToCart: (restaurantId, item) => {
@@ -240,14 +240,11 @@ export const useOrderStore = create<OrderState>()(
 
       getOrdersByCustomer: (customerId) => {
         const orders = get().orders;
-        console.log('All orders in store:', orders); // Debug log
-        console.log('Looking for customer:', customerId); // Debug log
 
         const filtered = orders
           .filter((order) => order.customerId === customerId)
           .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
-        console.log('Filtered orders:', filtered); // Debug log
         return filtered;
       },
 
@@ -266,33 +263,63 @@ export const useOrderStore = create<OrderState>()(
       },
 
       hydrateFromDB: async () => {
-        set({ isLoading: true });
+        try {
+          set({ isLoadingStore: true });
+          const { data: ordersRes, error } = await supabase
+            .from('orders')
+            .select('*')
+            .order('created_at', { ascending: false });
 
-        const { data: ordersRes, error } = await supabase.from('orders').select('*');
+          if (error) throw error;
 
-        if (error) throw error;
+          const transformedOrders = ordersRes?.map(order => ({
+            ...order,
+            customerId: order.customer_id,
+            restaurantId: order.restaurant_id,
+            totalAmount: order.total_amount,
+            createdAt: order.created_at,
+            updatedAt: order.updated_at,
+            tableNumber: order.table_number,
+            specialInstructions: order.special_instructions
+          })) || [];
 
-        // Transform Supabase snake_case to camelCase
-        const transformedOrders = ordersRes?.map(order => ({
-          ...order,
-          customerId: order.customer_id,
-          restaurantId: order.restaurant_id,
-          totalAmount: order.total_amount,
-          createdAt: order.created_at,
-          updatedAt: order.updated_at,
-          tableNumber: order.table_number,
-          specialInstructions: order.special_instructions
-        })) || [];
-
-        set({
-          orders: transformedOrders,
-          isLoading: false,
-        });
-
+          set({
+            orders: transformedOrders,
+            isLoadingStore: false,
+          });
+        } catch (error) {
+          console.error('Failed to hydrate orders:', error);
+          set({ isLoadingStore: false });
+        }
       },
     }),
     {
       name: 'order-storage',
+      onRehydrateStorage: () => async (state) => {
+        if (state) {
+          // Wait for store to be fully rehydrated
+          await state.hydrateFromDB();
+
+          // Set up realtime subscription
+          const channel = supabase
+            .channel('orders_changes')
+            .on(
+              'postgres_changes',
+              {
+                event: '*',
+                schema: 'public',
+                table: 'orders'
+              },
+              () => {
+                state.hydrateFromDB();
+              }
+            )
+            .subscribe();
+
+          // Store the channel reference for cleanup
+          state.subscriptionChannel = channel;
+        }
+      }
     }
   )
 );

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Outlet, NavLink, useParams, useNavigate } from 'react-router-dom';
-import { Menu as MenuIcon, ShoppingBag, User, LogOut, X, LayoutDashboard, Settings } from 'lucide-react';
+import { ShoppingBag, User, LogOut, Home, LayoutDashboard, Settings } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from '../components/common/LanguageSelector';
@@ -27,7 +28,7 @@ const CustomerLayout = () => {
     {
       path: `/user/menu`,
       label: t('common.scannedMenus'),
-      icon: MenuIcon,
+      icon: Home,
       exact: true,
     },
     {
@@ -43,7 +44,11 @@ const CustomerLayout = () => {
       {/* Sidebar */}
       <div className="w-64 bg-white shadow-md">
         <div className="p-4 border-b border-gray-200">
-          <h1 className="text-xl font-semibold text-primary">2akel</h1>
+          <h1 className="text-xl font-semibold text-primary">
+            <Link to="/">
+              2akel
+            </Link>
+          </h1>
           <p className="text-sm text-gray-600">{t('restaurant.dashboard')}</p>
         </div>
 
