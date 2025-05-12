@@ -22,9 +22,9 @@
     "places": "Discover Places",
     "home": "Home",
     "viewMore": "Details",
-    "call":"Call",
-    "location":"Location",
-    "saveMenu":"Save Menu"
+    "call": "Call",
+    "location": "Location",
+    "saveMenu": "Save Place"
   },
   "auth": {
     "email": "Email",
@@ -62,17 +62,17 @@
       "discoverMore": "Discover More Places",
       "noMenus": {
         "title": "No Saved Places Yet",
-        "subtitle": "You haven't saved any places yet.!",
+        "subtitle": "You haven't saved any places yet!",
         "link": "Save your first place"
       }
     },
     "myOrders": {
       "title": "My Orders",
       "discoverMore": "Place a New Order",
-      "noOrders":{
-        "title":"No Orders Yet",
-        "subtitle":"You haven't placed any orders yet. Browse menus and place your first order!",
-        "link":"Place your first order"
+      "noOrders": {
+        "title": "No Orders Yet",
+        "subtitle": "You haven't placed any orders yet. Browse places and start your first order now!",
+        "link": "Place your first order"
       }
     }
   },
@@ -172,10 +172,10 @@
       "subtitle": "Narrow down your choices by selecting from a variety of cuisines"
     }
   },
-  "place":{
-    "categories":{
-      "all":"All",
-      "featured":"Featured"
+  "place": {
+    "categories": {
+      "all": "All",
+      "featured": "Featured"
     }
   }
 }
